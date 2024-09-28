@@ -22,7 +22,9 @@ public class TakingTurnsQueue
     {
         var person = new Person(name, turns);
         _people.Enqueue(person);
+        
     }
+
 
     /// <summary>
     /// Get the next person in the queue and return them. The person should
@@ -44,6 +46,10 @@ public class TakingTurnsQueue
             {
                 person.Turns -= 1;
                 _people.Enqueue(person);
+            }
+            else if (person.Turns <= 0)
+            {
+                   _people.Enqueue(person);
             }
 
             return person;
