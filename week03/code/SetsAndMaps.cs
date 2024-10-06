@@ -22,7 +22,37 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var pairList = new List<string>();
+        var wordSets = new HashSet<string>(words);
+        foreach (var i in wordSets)
+        {   //FOr each word in the list of words
+            // convert the characters of the word into an array
+            char[] charArray = i.ToCharArray();
+            // reverse the array
+            Array.Reverse(charArray);
+            //convert the array to a string once more.
+            var revisedWord = new string(charArray);
+            // Check to see if the word is in the wordSets
+            if (!wordSets.Contains(revisedWord))
+            { }
+            else
+            {
+                // Only checked if  reversed word is not equal to the word been checked
+                if (revisedWord != i)
+                {  // the word and its reersed has been seen, concate them and add them to
+                   // thelist of words that have pairs
+                    string c = $"{revisedWord} & {i}";
+                    // revome both the revised word and the original word fromthe set
+                    wordSets.Remove(revisedWord);
+                    wordSets.Remove(i);
+                    // Add the concatinated word to the found pair
+                    pairList.Add(c);
+                }
+
+            }
+        }
+        // return the foundpair lit after it hasthe converted toan array.
+        return pairList.ToArray();
     }
 
     /// <summary>
@@ -43,6 +73,14 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3];
+            var number = int.Parse(fields[4]);
+            if (!degrees.ContainsKey(degree))
+                degrees[degree] = number / number;
+            else
+                degrees[degree] += number /number;
+
+
         }
 
         return degrees;
@@ -66,7 +104,22 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
+        char[] charArray = word1.ToCharArray();
+        char[] charArray2 = word2.ToCharArray();
+
+        //convert the array to a string once more.
+        //   var revisedWord = new string(charArray);
+        var anagram = new Dictionary<char, char>();
         // TODO Problem 3 - ADD YOUR CODE HERE
+        if (word1.Length != word2.Length)
+        {
+            return false;
+
+        }
+        
+
+
+
         return false;
     }
 
@@ -84,7 +137,8 @@ public static class SetsAndMaps
     /// https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
     /// 
     /// </summary>
-    public static string[] EarthquakeDailySummary()
+public static string[] EarthquakeDailySummary()
+
     {
         const string uri = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
         using var client = new HttpClient();

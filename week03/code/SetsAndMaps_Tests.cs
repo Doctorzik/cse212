@@ -8,7 +8,7 @@ public class FindPairsTests
     [TestMethod]
     public void FindPairs_TwoPairs()
     {
-        var actual = SetsAndMaps.FindPairs(["am", "at", "ma", "if", "fi"]);
+      var actual = SetsAndMaps.FindPairs(["am", "at", "ma", "if", "fi"]);
         var expected = new[] { "ma & am", "fi & if" };
 
         Assert.AreEqual(expected.Length, actual.Length);

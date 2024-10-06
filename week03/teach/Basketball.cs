@@ -25,12 +25,21 @@ public class Basketball
         reader.ReadFields(); // ignore header row
         while (!reader.EndOfData) {
             var fields = reader.ReadFields()!;
+
             var playerId = fields[0];
+            var year = fields[1];
             var points = int.Parse(fields[8]);
+            if(!players.ContainsKey(playerId))
+                 { players[playerId] = points;}
+            players[playerId] += points;
         }
+       var top =  players.ToArray();
+       
+       Array.Sort(top, (a, b) => b.Value - a.Value);
+       for(int i= 0;   i< 10;++i){
+           Console.WriteLine(top[i]);
+       }
+      //  Console.WriteLine($"Players: {{{string.Join(", ", players)}}}");
 
-        Console.WriteLine($"Players: {{{string.Join(", ", players)}}}");
-
-        var topPlayers = new string[10];
     }
 }
