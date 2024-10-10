@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 public static class SetsAndMaps
 {
@@ -78,7 +80,7 @@ public static class SetsAndMaps
             if (!degrees.ContainsKey(degree))
                 degrees[degree] = number / number;
             else
-                degrees[degree] += number /number;
+                degrees[degree] += number / number;
 
 
         }
@@ -104,23 +106,70 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        char[] charArray = word1.ToCharArray();
-        char[] charArray2 = word2.ToCharArray();
+        var low1 = word1.ToLower().Replace(" ", "");
+        var low2 = word2.ToLower().Replace(" ", ""); ;
+
+
+
+
+
+
+
 
         //convert the array to a string once more.
         //   var revisedWord = new string(charArray);
-        var anagram = new Dictionary<char, char>();
+        var anagramWord1 = new Dictionary<char, int>();
+        var anagramWord2 = new Dictionary<char, int>();
+
         // TODO Problem 3 - ADD YOUR CODE HERE
-        if (word1.Length != word2.Length)
+        if (low1.Length != low2.Length)
         {
             return false;
 
         }
-        
+        else
+        {
+            for (int i = 0; i < low1.Length; ++i)
+            {
+                if (!anagramWord1.ContainsKey(low1[i]))
+                    anagramWord1[low1[i]] = 0;
+                if (anagramWord1.ContainsKey(low1[i]))
+                {
+                    anagramWord1[low1[i]] += 1;
+                }
+
+            }
+            for (int i = 0; i < low2.Length; ++i)
+            {
+                if (!anagramWord2.ContainsKey(low2[i]))
+                    anagramWord2[low2[i]] = 0;
+                if (anagramWord1.ContainsKey(low2[i]))
+                {
+                    anagramWord2[low2[i]] += 1;
+                }
+
+            }
+        }
+
+
+        var storedWord1 = anagramWord1.OrderBy(x => x.Key).ToArray();
+        var storedWord2 = anagramWord2.OrderBy(x => x.Key).ToArray();
+
+        bool same = storedWord1.SequenceEqual(storedWord2);
+        if (same)
+        {
+            return true;
+        }
+        else
+
+            return false;
 
 
 
-        return false;
+
+
+
+
     }
 
     /// <summary>
@@ -137,7 +186,7 @@ public static class SetsAndMaps
     /// https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
     /// 
     /// </summary>
-public static string[] EarthquakeDailySummary()
+    public static string[] EarthquakeDailySummary()
 
     {
         const string uri = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
@@ -146,15 +195,45 @@ public static string[] EarthquakeDailySummary()
         using var jsonStream = client.Send(getRequestMessage).Content.ReadAsStream();
         using var reader = new StreamReader(jsonStream);
         var json = reader.ReadToEnd();
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
 
+       // var NumberFeatures = featureCollection.Features;
+      var  summaryList =  new List<string>();
+var s  =  featureCollection.Features.GetRange(0, 8);
+  
+       
+     foreach(var f in s  )
+          { 
+       
+             
+             var place = f.Properties.Place;
+             var mag = f.Properties.Mag;
+             summaryList.Add($"Place - {place} - Mag {mag}");
+          
+          } 
+
+
+
+
+
+
+
+
+
+
         // TODO Problem 5:
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
+
+
+
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        return summaryList.ToArray();
     }
 }
