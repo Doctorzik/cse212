@@ -201,30 +201,19 @@ public static class SetsAndMaps
         };
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
-
-       // var NumberFeatures = featureCollection.Features;
-      var  summaryList =  new List<string>();
-var s  =  featureCollection.Features.GetRange(0, 8);
-  
-       
-     foreach(var f in s  )
-          { 
-       
-             
-             var place = f.Properties.Place;
-             var mag = f.Properties.Mag;
-             summaryList.Add($"Place - {place} - Mag {mag}");
-          
-          } 
+        var summaryList = new List<string>();
+        var s = featureCollection.Features.GetRange(0, 8);
 
 
+        foreach (var f in s)
+        {
 
 
+            var place = f.Properties.Place;
+            var mag = f.Properties.Mag;
+            summaryList.Add($"Place - {place} - Mag {mag}");
 
-
-
-
-
+        }
 
         // TODO Problem 5:
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
